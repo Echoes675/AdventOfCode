@@ -5,6 +5,7 @@ namespace AdventOfCode._2023;
 using AdventOfCode._2023.Day4;
 using AdventOfCode._2023.Day5;
 using AdventOfCode._2023.Day6;
+using AdventOfCode._2023.Day7;
 
 public class QuizRunner2023 : IQuizRunner
 {
@@ -30,9 +31,21 @@ public class QuizRunner2023 : IQuizRunner
             case 6:
                 Day6();
                 break;
+            case 7:
+                Day7();
+                break;
         }
 
         Console.ReadLine();
+    }
+
+    private static void Day7()
+    {
+        var puzzle = new CamelCardsPuzzle();
+        var result = puzzle.CalculateAnswers("C:\\Development\\Personal\\AdventOfCode\\2023\\Day7\\input.txt");
+
+        Console.WriteLine($"Q1: {result.Answer1}");
+        Console.WriteLine($"Q2: {result.Answer2}");
     }
 
     private static void Day6()
