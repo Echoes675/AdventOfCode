@@ -7,4 +7,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="AdventOfCode.Test\**" />
+    <EmbeddedResource Remove="AdventOfCode.Test\**" />
+    <None Remove="AdventOfCode.Test\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.13.3" />
+  </ItemGroup>
+
 </Project>

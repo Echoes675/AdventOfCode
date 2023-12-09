@@ -20,7 +20,7 @@ public class Hand : IComparable<Hand>
         {'J', 11},
         {'Q', 12},
         {'K', 13},
-        {'Q', 14}
+        {'A', 14}
     };
 
     public Hand(string cards)
@@ -36,7 +36,7 @@ public class Hand : IComparable<Hand>
         }
 
         Cards = !_invalidCard.Matches(cards).Any()
-            ? cards
+            ? cards.ToUpper()
             : throw new ArgumentException($"Cards contain invalid characters. Cards={cards}");
 
     }
@@ -56,23 +56,53 @@ public class Hand : IComparable<Hand>
         var leftMatches = _validCard.Matches(sortedCardsLeft);
         var rightMatches = _validCard.Matches(sortedCardsRight);
 
-       var leftValue = GetHandValue(leftMatches);
-       var rightValue = GetHandValue(rightMatches);
+        if (leftMatches.Any() || rightMatches.Any())
+        {
+            var leftValue = GetHandValue(leftMatches);
+            var rightValue = GetHandValue(rightMatches);
 
-       // Winning hand
-       if (leftValue != rightValue)
-       {
-           return leftValue > rightValue ? 1 : -1;
-       }
+            // Winning hand
+            if (leftValue != rightValue)
+            {
+                return leftValue > rightValue ? 1 : -1;
+            } 
+        }
 
         // It's a draw - who won
-        _cardStrength.TryGetValue(Cards.First(), out var firstCardLeft);
-        _cardStrength.TryGetValue(other.Cards.First(), out var firstCardRight);
-        return firstCardLeft > firstCardRight ? 1 : -1;
+        return CalculateDraw(Cards, other.Cards);
     }
 
-    private int GetHandValue(MatchCollection matches)
+    // Define the is greater than operator.
+    public static bool operator >(Hand operand1, Hand operand2)
     {
+        return operand1.CompareTo(operand2) > 0;
+    }
+
+    // Define the is less than operator.
+    public static bool operator <(Hand operand1, Hand operand2)
+    {
+        return operand1.CompareTo(operand2) < 0;
+    }
+
+    // Define the is greater than or equal to operator.
+    public static bool operator >=(Hand operand1, Hand operand2)
+    {
+        return operand1.CompareTo(operand2) >= 0;
+    }
+
+    // Define the is less than or equal to operator.
+    public static bool operator <=(Hand operand1, Hand operand2)
+    {
+        return operand1.CompareTo(operand2) <= 0;
+    }
+
+    private int GetHandValue(MatchCollection? matches)
+    {
+        if (matches == null || !matches.Any())
+        {
+            return 0;
+        }
+
         switch (matches.Count)
         {
             case 1 when matches.First().Value.Length == 5:
@@ -90,11 +120,28 @@ public class Hand : IComparable<Hand>
             case 2 when matches.All(m => m.Value.Length == 2):
                 // Two pair
                 return 2;
-            case 1 when matches.First().Value.Length == 3:
+            case 1 when matches.First().Value.Length == 2:
                 // Two pair
                 return 1;
             default:
                 return 0;
         }
+    }
+
+    private int CalculateDraw(string left, string right)
+    {
+        for (var i = 0; i < left.Length; i++)
+        {
+            if (left[i] == right[i])
+            {
+                continue;
+
+            }
+            _cardStrength.TryGetValue(left[i], out var leftValue);
+            _cardStrength.TryGetValue(right[i], out var rightValue);
+            return leftValue > rightValue ? 1 : -1;
+        }
+
+        return 0;
     }
 }
