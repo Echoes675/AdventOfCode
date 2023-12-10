@@ -2,13 +2,13 @@
 
 public class Play : IComparable<Play>
 {
-    public Play(Hand hand, int bid)
+    public Play(IHand hand, int bid)
     {
         Hand = hand;
         Bid = bid;
     }
 
-    public Hand Hand { get; }
+    public IHand Hand { get; }
     public int Bid { get; }
 
     public int CompareTo(Play? other)

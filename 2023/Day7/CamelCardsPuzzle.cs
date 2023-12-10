@@ -21,20 +21,29 @@ public class CamelCardsPuzzle
             {
                 var values = x.Split(" ");
                 var bid = int.Parse(values[1]);
-                return new Play(new Hand(values[0]), bid);
+                return new Play(new StandardHand(values[0]), bid);
             }).ToList();
 
-        var answer1 = CalculateAnswer1(plays);
-        var answer2 = 0;
+        var answer1 = CalculateAnswer(plays);
+
+        var jokerPlays = file.Select(
+            x =>
+            {
+                var values = x.Split(" ");
+                var bid = int.Parse(values[1]);
+                return new Play(new JokerHand(values[0]), bid);
+            }).ToList();
+        var answer2 = CalculateAnswer(jokerPlays);
 
         return (answer1, answer2);
     }
 
-    private int CalculateAnswer1(List<Play> plays)
+    private int CalculateAnswer(List<Play> plays)
     {
         var total = 0;
         var rank = 1;
         plays.Sort();
+        var hands = plays.Select(p => p.Hand).ToList();
         foreach (var play in plays)
         {
             total += play.Bid * rank;
