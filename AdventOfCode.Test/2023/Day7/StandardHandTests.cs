@@ -3,13 +3,13 @@
 using AdventOfCode._2023.Day7;
 
 [TestFixture]
-public class HandTests
+public class StandardHandTests
 {
     [Test]
     public void CompareTo_LeftStrongerFiveOfAKindThanRight_Returns1()
     {
-        var left = new Hand("AAAAA");
-        var right = new Hand("KKKKK");
+        var left = new StandardHand("AAAAA");
+        var right = new StandardHand("KKKKK");
 
         var result = left.CompareTo(right);
 
@@ -19,8 +19,8 @@ public class HandTests
     [Test]
     public void CompareTo_LeftWeakerFiveOfAKindThanRight_Returns1()
     {
-        var left = new Hand("KKKKK");
-        var right = new Hand("AAAAA");
+        var left = new StandardHand("KKKKK");
+        var right = new StandardHand("AAAAA");
 
         var result = left.CompareTo(right);
 
@@ -30,8 +30,8 @@ public class HandTests
     [Test]
     public void CompareTo_LeftStrongerThreeOfAKindThanRight_Returns1()
     {
-        var left = new Hand("KKKKA");
-        var right = new Hand("QQQQA");
+        var left = new StandardHand("KKKKA");
+        var right = new StandardHand("QQQQA");
 
         var result = left.CompareTo(right);
 
@@ -41,8 +41,8 @@ public class HandTests
     [Test]
     public void CompareTo_RightStronger_ReturnsNeg1()
     {
-        var left = new Hand("32T3K");
-        var right = new Hand("QQQJA");
+        var left = new StandardHand("32T3K");
+        var right = new StandardHand("QQQJA");
 
         var result = left.CompareTo(right);
 
@@ -52,13 +52,13 @@ public class HandTests
     [Test]
     public void Sort_UnorderedList_ReturnsOrderedList()
     {
-        var hands = new List<Hand>
+        var hands = new List<StandardHand>
         {
-             new Hand("32T3K"),
-             new Hand("QQQJA"),
-             new Hand("T55J5"),
-             new Hand("KTJJT"),
-             new Hand("KK677"),
+             new StandardHand("32T3K"),
+             new StandardHand("QQQJA"),
+             new StandardHand("T55J5"),
+             new StandardHand("KTJJT"),
+             new StandardHand("KK677"),
         };
 
         hands.Sort();

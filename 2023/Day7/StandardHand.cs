@@ -2,28 +2,20 @@
 
 namespace AdventOfCode._2023.Day7;
 
-public class Hand : IComparable<Hand>
+public class StandardHand : IComparable<StandardHand>, IHand
 {
     private static Regex _validCard = new Regex(@"([2-9TJQKA])\1+");
     private static Regex _invalidCard = new Regex(@"[^2-9TJQKA\s]+");
-    private static Dictionary<char, int> _cardStrength = new ()
-    {
-        {'2', 2},
-        {'3', 3},
-        {'4', 4},
-        {'5', 5},
-        {'6', 6},
-        {'7', 7},
-        {'8', 8},
-        {'9', 9},
-        {'T', 10},
-        {'J', 11},
-        {'Q', 12},
-        {'K', 13},
-        {'A', 14}
-    };
+    private readonly Dictionary<char, int> _cardStrength;
 
-    public Hand(string cards)
+    private int _value = -1;
+
+    public StandardHand(string cards)
+        : this(cards, null)
+    {
+    }
+
+    internal StandardHand(string cards, Dictionary<char, int>? cardStrength)
     {
         if (string.IsNullOrEmpty(cards))
         {
@@ -39,11 +31,39 @@ public class Hand : IComparable<Hand>
             ? cards.ToUpper()
             : throw new ArgumentException($"Cards contain invalid characters. Cards={cards}");
 
+        _cardStrength = cardStrength ?? new()
+        {
+            {'2', 2},
+            {'3', 3},
+            {'4', 4},
+            {'5', 5},
+            {'6', 6},
+            {'7', 7},
+            {'8', 8},
+            {'9', 9},
+            {'T', 10},
+            {'J', 11},
+            {'Q', 12},
+            {'K', 13},
+            {'A', 14}
+        };
     }
 
     public string Cards { get; }
 
-    public int CompareTo(Hand? other)
+    public int Value => _value;
+
+    public int CompareTo<T>(T? other) where T : IHand
+    {
+        if (other is not StandardHand otherJokerHand)
+        {
+            throw new ArgumentException($"Parameter must be type of {typeof(StandardHand)}. Type=\"{typeof(T)}\"");
+        }
+
+        return CompareTo(otherJokerHand);
+    }
+
+    public int CompareTo(StandardHand? other)
     {
         if (other == null)
         {
@@ -59,13 +79,14 @@ public class Hand : IComparable<Hand>
         if (leftMatches.Any() || rightMatches.Any())
         {
             var leftValue = GetHandValue(leftMatches);
+            _value = leftValue;
             var rightValue = GetHandValue(rightMatches);
 
             // Winning hand
             if (leftValue != rightValue)
             {
                 return leftValue > rightValue ? 1 : -1;
-            } 
+            }
         }
 
         // It's a draw - who won
@@ -73,25 +94,25 @@ public class Hand : IComparable<Hand>
     }
 
     // Define the is greater than operator.
-    public static bool operator >(Hand operand1, Hand operand2)
+    public static bool operator >(StandardHand operand1, StandardHand operand2)
     {
         return operand1.CompareTo(operand2) > 0;
     }
 
     // Define the is less than operator.
-    public static bool operator <(Hand operand1, Hand operand2)
+    public static bool operator <(StandardHand operand1, StandardHand operand2)
     {
         return operand1.CompareTo(operand2) < 0;
     }
 
     // Define the is greater than or equal to operator.
-    public static bool operator >=(Hand operand1, Hand operand2)
+    public static bool operator >=(StandardHand operand1, StandardHand operand2)
     {
         return operand1.CompareTo(operand2) >= 0;
     }
 
     // Define the is less than or equal to operator.
-    public static bool operator <=(Hand operand1, Hand operand2)
+    public static bool operator <=(StandardHand operand1, StandardHand operand2)
     {
         return operand1.CompareTo(operand2) <= 0;
     }
@@ -121,7 +142,7 @@ public class Hand : IComparable<Hand>
                 // Two pair
                 return 2;
             case 1 when matches.First().Value.Length == 2:
-                // Two pair
+                // One pair
                 return 1;
             default:
                 return 0;
