@@ -6,102 +6,109 @@ using AdventOfCode._2023.Day4;
 using AdventOfCode._2023.Day5;
 using AdventOfCode._2023.Day6;
 using AdventOfCode._2023.Day7;
+using AdventOfCode._2023.Day8;
 
 public class QuizRunner2023 : IQuizRunner
 {
     public void Run(int day)
     {
+        (long Answer1, long Answer2) result = (0,0);
         switch (day)
         {
             case 1:
-                Day1();
+                result = Day1();
                 break;
             case 2:
-                Day2();
+                result = Day2();
                 break;
             case 3:
-                Day3();
+                result = Day3();
                 break;
             case 4:
-                Day4();
+                result = Day4();
                 break;
             case 5:
-                Day5();
+                result = Day5();
                 break;
             case 6:
-                Day6();
+                result = Day6();
                 break;
             case 7:
-                Day7();
+                result = Day7();
+                break;
+            case 8:
+                result = Day8();
                 break;
         }
-
+        Console.WriteLine($"Q1: {result.Answer1}");
+        Console.WriteLine($"Q2: {result.Answer2}");
         Console.ReadLine();
     }
 
-    private static void Day7()
+    private static (long Answer1, long Answer2) Day8()
+    {
+        var puzzle = new MapPuzzle();
+        var result = puzzle.CalculateAnswers("C:\\Development\\Personal\\AdventOfCode\\2023\\Day8\\input.txt");
+
+        return result;
+    }
+
+    private static (long Answer1, long Answer2) Day7()
     {
         var puzzle = new CamelCardsPuzzle();
         var result = puzzle.CalculateAnswers("C:\\Development\\Personal\\AdventOfCode\\2023\\Day7\\input.txt");
 
-        Console.WriteLine($"Q1: {result.Answer1}");
-        Console.WriteLine($"Q2: {result.Answer2}");
+        return result;
     }
 
-    private static void Day6()
+    private static (long Answer1, long Answer2) Day6()
     {
         var puzzle = new BoatRacePuzzle();
         var result = puzzle.CalculateAnswers();
 
-        Console.WriteLine($"Q1: {result.Answer1}");
-        Console.WriteLine($"Q2: {result.Answer2}");
+        return result;
     }
 
-    private static void Day5()
+    private static (long Answer1, long Answer2) Day5()
     {
         var puzzle = new SeedsPuzzle();
         var result = puzzle.CalculateAnswers("C:\\Development\\Personal\\AdventOfCode\\AdventOfCode\\2023\\Day5\\input.txt");
 
-        Console.WriteLine($"Q1: {result.Answer1}");
-        Console.WriteLine($"Q2: {result.Answer2}");
+        return result;
     }
 
-    private static void Day4()
+    private static (long Answer1, long Answer2) Day4()
     {
         var puzzle = new CardPuzzle();
         var result = puzzle.CalculateAnswers("C:\\Development\\Personal\\AdventOfCode\\AdventOfCode\\2023\\Day4\\input.txt");
 
-        Console.WriteLine($"Q1: {result.Answer1}");
-        Console.WriteLine($"Q2: {result.Answer2}");
+        return result;
     }
 
-    private static void Day3()
+    private static (long Answer1, long Answer2) Day3()
     {
         var puzzle = new SchematicPuzzle();
         var result = puzzle.CalculateAnswers("C:\\Development\\Personal\\AdventOfCode\\AdventOfCode\\2023\\Day3\\input.txt");
         //var result = puzzle.CalculateAnswers("C:\\Development\\Personal\\AdventOfCode\\AdventOfCode\\2023\\Day3\\test.txt");
 
-        Console.WriteLine($"Q1: {result.Answer1}");
-        Console.WriteLine($"Q2: {result.Answer2}");
+        return result;
     }
 
-    private static void Day2()
+    private static (long Answer1, long Answer2) Day2()
     {
         var idCalculator = new Day2.GamesIdCalculator();
         var result =
             idCalculator.RetrieveAnswers("C:\\Development\\Personal\\AdventOfCode\\AdventOfCode\\2023\\Day2\\CubeGame.txt");
 
-        Console.WriteLine($"Q1: {result.Answer1}");
-        Console.WriteLine($"Q2: {result.Answer2}");
+        return result;
     }
 
-    private static void Day1()
+    private static (long Answer1, long Answer2) Day1()
     {
         var calibrationValueCalculator = new Day1.CalibrationValueCalculator();
         var result =
             calibrationValueCalculator.Calculate("C:\\Development\\Personal\\AdventOfCode\\AdventOfCode\\2023\\Day1\\input.txt");
 
-        Console.WriteLine($"Q1: {result.answer1}");
-        Console.WriteLine($"Q2: {result.answer2}");
+        return result;
     }
 }
