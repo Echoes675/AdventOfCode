@@ -17,4 +17,8 @@
     <PackageReference Include="NUnit" Version="3.13.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="2023\Day8\" />
+  </ItemGroup>
+
 </Project>
