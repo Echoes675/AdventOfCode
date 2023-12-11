@@ -22,7 +22,7 @@ public class MapPuzzle : PuzzleBase
             map.Add(match.Groups[1].Value, (match.Groups[2].Value, match.Groups[3].Value));
         }
 
-        var answer1 = CalculatePart1(map, directionsMatches.First().Value);
+        var answer1 = CalculatePart1(map, directionsMatches.First().Value.Trim());
 
         var answer2 = 0;
 
@@ -33,7 +33,7 @@ public class MapPuzzle : PuzzleBase
     {
         var currentLocation = "AAA";
         (string Left, string Right) currentPair;
-        var count = 1;
+        var count = 0;
         var index = 0;
         var found = false;
         while (!found)
@@ -47,7 +47,6 @@ public class MapPuzzle : PuzzleBase
 
             if (currentLocation == "ZZZ")
             {
-                count++;
                 found = true;
             }
         }
