@@ -32,23 +32,16 @@ public class MapPuzzle : PuzzleBase
     private long CalculatePart1(Dictionary<string, (string Left, string Right)> map, string directions)
     {
         var currentLocation = "AAA";
-        (string Left, string Right) currentPair;
         var count = 0;
         var index = 0;
-        var found = false;
-        while (!found)
+        while (currentLocation != "ZZZ")
         {
             var direction = directions[index];
-            currentPair = map[currentLocation];
+            (string Left, string Right) currentPair = map[currentLocation];
             currentLocation = direction == 'L' ? currentPair.Left : currentPair.Right;
 
             count++;
             index = index < directions.Length - 1 ? index + 1 : 0;
-
-            if (currentLocation == "ZZZ")
-            {
-                found = true;
-            }
         }
 
         return count;
