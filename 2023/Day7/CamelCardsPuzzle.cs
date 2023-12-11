@@ -1,20 +1,10 @@
 ﻿namespace AdventOfCode._2023.Day7;
 
-public class CamelCardsPuzzle
+public class CamelCardsPuzzle : PuzzleBase
 {
     public (long Answer1, long Answer2) CalculateAnswers(string filePath)
     {
-        if (string.IsNullOrEmpty(filePath))
-        {
-            throw new ArgumentException("Value cannot be null or empty.", nameof(filePath));
-        }
-
-        if (!File.Exists(filePath))
-        {
-            throw new InvalidOperationException($"Input file does not exist. File=\"{filePath}\"");
-        }
-
-        var file = File.ReadAllLines(filePath).ToList();
+        var file = GetFileLines(filePath);
 
         var plays = file.Select(
             x =>

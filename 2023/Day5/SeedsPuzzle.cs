@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
-public class SeedsPuzzle
+public class SeedsPuzzle : PuzzleBase
 {
 
     private readonly SeedRangeReader _seedRangeReader;
@@ -22,17 +22,7 @@ public class SeedsPuzzle
 
     public (long Answer1, long Answer2) CalculateAnswers(string filePath)
     {
-        if (string.IsNullOrEmpty(filePath))
-        {
-            throw new ArgumentException("Value cannot be null or empty.", nameof(filePath));
-        }
-
-        if (!File.Exists(filePath))
-        {
-            throw new InvalidOperationException($"Input file does not exist. File=\"{filePath}\"");
-        }
-
-        var file = File.ReadAllLines(filePath).Where(x => !string.IsNullOrEmpty(x)).ToList();
+        var file = GetFileLines(filePath);
         var seeds = _numbers.Matches(file.First()).Select(m => long.Parse(m.Value)).OrderBy(x => x).ToList();
 
         var almanac = GetAlmanac(file);

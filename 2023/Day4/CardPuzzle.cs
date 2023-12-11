@@ -4,7 +4,7 @@ using System;
 
 namespace AdventOfCode._2023.Day4;
 
-public class CardPuzzle
+public class CardPuzzle : PuzzleBase
 {
 
     private readonly CardFactory _cardFactory;
@@ -22,17 +22,7 @@ public class CardPuzzle
 
     public (int Answer1, int Answer2) CalculateAnswers(string filePath)
     {
-        if (string.IsNullOrEmpty(filePath))
-        {
-            throw new ArgumentException("Value cannot be null or empty.", nameof(filePath));
-        }
-
-        if (!File.Exists(filePath))
-        {
-            throw new InvalidOperationException($"Input file does not exist. File=\"{filePath}\"");
-        }
-
-        var file = File.ReadAllLines(filePath).ToList();
+        var file = GetFileLines(filePath);
         var cards = _cardFactory.CreateCards(file);
 
         var answer1 = cards.Sum(c => c.Value.Value);
