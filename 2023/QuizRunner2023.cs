@@ -7,6 +7,7 @@ using AdventOfCode._2023.Day5;
 using AdventOfCode._2023.Day6;
 using AdventOfCode._2023.Day7;
 using AdventOfCode._2023.Day8;
+using AdventOfCode._2023.Day9;
 
 public class QuizRunner2023 : IQuizRunner
 {
@@ -39,10 +40,21 @@ public class QuizRunner2023 : IQuizRunner
             case 8:
                 result = Day8();
                 break;
+            case 9:
+                result = Day9();
+                break;
         }
         Console.WriteLine($"Q1: {result.Answer1}");
         Console.WriteLine($"Q2: {result.Answer2}");
         Console.ReadLine();
+    }
+
+    private static (long Answer1, long Answer2) Day9()
+    {
+        var puzzle = new MirageMaintenancePuzzle();
+        var result = puzzle.CalculateAnswers("C:\\Development\\Personal\\AdventOfCode\\2023\\Day9\\input.txt");
+
+        return result;
     }
 
     private static (long Answer1, long Answer2) Day8()
