@@ -10,7 +10,9 @@ public class MirageMaintenancePuzzle : PuzzleBase
             .Select(x => CalculateNextNumber(x.Split(" ").Select(long.Parse).ToList()))
             .Sum();
 
-        var answer2 = 0;
+        var answer2 = report
+            .Select(x => CalculatePreviousNumber(x.Split(" ").Select(long.Parse).ToList()))
+            .Sum();
 
         return (answer1, answer2);
     }
@@ -18,6 +20,23 @@ public class MirageMaintenancePuzzle : PuzzleBase
     private long CalculateNextNumber(string numbers)
     {
         return CalculateNextNumber(numbers.Split(" ").Select(long.Parse).ToList());
+    }
+
+    private long CalculatePreviousNumber(string numbers)
+    {
+        return CalculatePreviousNumber(numbers.Split(" ").Select(long.Parse).ToList());
+    }
+
+    private long CalculatePreviousNumber(List<long> numbers)
+    {
+        var diffs = CalculateDiffs(numbers);
+        var previousNumber = diffs.First();
+        if (diffs.GroupBy(x => x).Count() > 1)
+        {
+            previousNumber = CalculatePreviousNumber(diffs);
+        }
+
+        return numbers.First() - previousNumber;
     }
 
     private long CalculateNextNumber(List<long> numbers)
