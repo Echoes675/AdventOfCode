@@ -14,7 +14,7 @@ public class PuzzleBase
             throw new InvalidOperationException($"Input file does not exist. File=\"{filePath}\"");
         }
 
-        return File.ReadAllLines(filePath).ToList();
+        return File.ReadAllLines(filePath.Trim()).ToList();
     }
 
     protected string ReadFile(string filePath)
@@ -29,6 +29,6 @@ public class PuzzleBase
             throw new InvalidOperationException($"Input file does not exist. File=\"{filePath}\"");
         }
 
-        return File.ReadAllText(filePath);
+        return File.ReadAllText(filePath.Trim());
     }
 }

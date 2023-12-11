@@ -17,16 +17,6 @@ public class MirageMaintenancePuzzle : PuzzleBase
         return (answer1, answer2);
     }
 
-    private long CalculateNextNumber(string numbers)
-    {
-        return CalculateNextNumber(numbers.Split(" ").Select(long.Parse).ToList());
-    }
-
-    private long CalculatePreviousNumber(string numbers)
-    {
-        return CalculatePreviousNumber(numbers.Split(" ").Select(long.Parse).ToList());
-    }
-
     private long CalculatePreviousNumber(List<long> numbers)
     {
         var diffs = CalculateDiffs(numbers);
