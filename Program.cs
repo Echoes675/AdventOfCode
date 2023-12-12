@@ -8,7 +8,7 @@
         static void Main(string[] args)
         {
             var year = 2023;
-            var day = 9;
+            var day = 10;
 
             IQuizRunner runner;
             switch (year)

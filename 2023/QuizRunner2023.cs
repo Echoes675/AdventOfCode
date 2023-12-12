@@ -2,6 +2,7 @@
 
 namespace AdventOfCode._2023;
 
+using AdventOfCode._2023.Day10;
 using AdventOfCode._2023.Day4;
 using AdventOfCode._2023.Day5;
 using AdventOfCode._2023.Day6;
@@ -43,10 +44,21 @@ public class QuizRunner2023 : IQuizRunner
             case 9:
                 result = Day9();
                 break;
+            case 10:
+                result = Day10();
+                break;
         }
         Console.WriteLine($"Q1: {result.Answer1}");
         Console.WriteLine($"Q2: {result.Answer2}");
         Console.ReadLine();
+    }
+
+    private static (long Answer1, long Answer2) Day10()
+    {
+        var puzzle = new PipeMazePuzzle();
+        var result = puzzle.CalculateAnswers("C:\\Development\\Personal\\AdventOfCode\\2023\\Day10\\input.txt");
+
+        return result;
     }
 
     private static (long Answer1, long Answer2) Day9()
