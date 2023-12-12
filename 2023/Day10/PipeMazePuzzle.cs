@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode._2023.Day10;
+﻿using System.Text;
+
+namespace AdventOfCode._2023.Day10;
 
 public class PipeMazePuzzle : PuzzleBase
 {
@@ -23,16 +25,20 @@ public class PipeMazePuzzle : PuzzleBase
 
         var start = grid.Single(l => l.Value.Value == 'S');
 
-        var roundTripSteps = CountRoundTripSteps(grid, start.Value.Coordinates, 0);
+        var roundTripSteps = CountRoundTripSteps(grid, start.Value.Coordinates, 0, out var loopPath);
         var answer1 = roundTripSteps / 2;
-        var answer2 = 0;
+
+        var maxRow = grid.Select(r => r.Key.Row).Max();
+        var maxColumn = grid.Select(r => r.Key.Column).Max();
+        var rebuiltMap = ReBuildMap(loopPath, ++maxRow, ++maxColumn, out var mapString);
+        var answer2 = mapString.Count(c => c == 'I');
 
         return (answer1, answer2);
     }
 
-    private int CountRoundTripSteps(Dictionary<(int, int), GridLocation> grid, (int row, int column) currentCoordinates, int count)
+    private int CountRoundTripSteps(Dictionary<(int, int), GridLocation> grid, (int row, int column) currentCoordinates, int count, out List<GridLocation> loopPath)
     {
-        var values = new List<char>();
+        loopPath = new List<GridLocation>();
         var previous = currentCoordinates;
         while (true)
         {
@@ -41,7 +47,7 @@ public class PipeMazePuzzle : PuzzleBase
                 return 0;
             }
 
-            values.Add(gridLocation.Value);
+            loopPath.Add(gridLocation);
             if (gridLocation.Value == 'S' && count > 0)
             {
                 return count;
@@ -87,5 +93,67 @@ public class PipeMazePuzzle : PuzzleBase
         };
 
         return neighbours;
+    }
+
+    private Dictionary<(int Row, int Column), GridLocation> ReBuildMap(List<GridLocation> loopPath, int maxRow, int maxColumn, out string mapString)
+    {
+        var mapSb = new StringBuilder();
+        var updatedMap = new Dictionary<(int Row, int Column), GridLocation>();
+        for (var i = 0; i < maxRow; i++)
+        {
+            var outsideLoop = true;
+            var sb = new StringBuilder();
+            var lastValue = '0';
+            var cornerCharCount = 0;
+            var tubeCount = 0;
+            for (var j = 0; j < maxColumn; j++)
+            {
+                var item = loopPath.FirstOrDefault(x => x.Coordinates == (i, j))
+                           ?? new GridLocation(outsideLoop ? 'O' : 'I', (i, j));
+
+                if (item.Value is '|' or 'J' or 'L' or 'S')
+                {
+                    cornerCharCount++;
+                    outsideLoop = cornerCharCount % 2 == 0;
+                }
+
+                //if (item.Value is 'F' or '7' or 'J' or 'L' or 'S')
+                //{
+                //    cornerCharCount++;
+                //    outsideLoop = cornerCharCount % 2 == 0;
+                //}
+
+                //if (item.Value is '|' && cornerCharCount % 2 != 0)
+                //if (item.Value is '|')
+                //{
+                //    tubeCount++;
+                //    outsideLoop = cornerCharCount % 2 == 0;
+                //}
+
+                //if (item.Value is '|' && lastValue is 'O' or 'I' or '|')
+                //{
+                //    outsideLoop = !outsideLoop;
+                //}
+
+                //if (lastValue == '|' && item.Value is 'F' or 'L')
+                //{
+                //    outsideLoop = !outsideLoop;
+                //}
+                //else if (lastValue == 'I' && item.Value is 'F' or '7' or 'L' or 'J')
+                //{
+                //    outsideLoop = true;
+                //}
+
+                lastValue = item.Value;
+
+                updatedMap.Add(item.Coordinates, item);
+                sb.Append(item.Value);
+            }
+
+            Console.WriteLine(sb.ToString());
+            mapSb.AppendLine(sb.ToString());
+        }
+        mapString = mapSb.ToString();
+        return updatedMap;
     }
 }

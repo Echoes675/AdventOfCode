@@ -2,7 +2,7 @@
 
 public class GridBuilder
 {
-    public Dictionary<(int, int), GridLocation> BuildGrid(List<string> input)
+    public Dictionary<(int Row, int Column), GridLocation> BuildGrid(List<string> input)
     {
         var result = new Dictionary<(int, int), GridLocation>();
         for(var rowIndex = 0; rowIndex < input.Count; rowIndex++)
