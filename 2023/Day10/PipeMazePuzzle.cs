@@ -103,9 +103,7 @@ public class PipeMazePuzzle : PuzzleBase
         {
             var outsideLoop = true;
             var sb = new StringBuilder();
-            var lastValue = '0';
             var cornerCharCount = 0;
-            var tubeCount = 0;
             for (var j = 0; j < maxColumn; j++)
             {
                 var item = loopPath.FirstOrDefault(x => x.Coordinates == (i, j))
@@ -116,35 +114,6 @@ public class PipeMazePuzzle : PuzzleBase
                     cornerCharCount++;
                     outsideLoop = cornerCharCount % 2 == 0;
                 }
-
-                //if (item.Value is 'F' or '7' or 'J' or 'L' or 'S')
-                //{
-                //    cornerCharCount++;
-                //    outsideLoop = cornerCharCount % 2 == 0;
-                //}
-
-                //if (item.Value is '|' && cornerCharCount % 2 != 0)
-                //if (item.Value is '|')
-                //{
-                //    tubeCount++;
-                //    outsideLoop = cornerCharCount % 2 == 0;
-                //}
-
-                //if (item.Value is '|' && lastValue is 'O' or 'I' or '|')
-                //{
-                //    outsideLoop = !outsideLoop;
-                //}
-
-                //if (lastValue == '|' && item.Value is 'F' or 'L')
-                //{
-                //    outsideLoop = !outsideLoop;
-                //}
-                //else if (lastValue == 'I' && item.Value is 'F' or '7' or 'L' or 'J')
-                //{
-                //    outsideLoop = true;
-                //}
-
-                lastValue = item.Value;
 
                 updatedMap.Add(item.Coordinates, item);
                 sb.Append(item.Value);
