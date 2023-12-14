@@ -25,8 +25,6 @@ public class CosmicExpansionPuzzle : PuzzleBase
 
         var celestialMap = BuildMap(file);
 
-        //var expandedMap = _cosmicExpansionCalculator.CalculateExpansion(file);
-
         var maxRow = celestialMap.Last().Coordinates.Row;
         var maxColumn = celestialMap.Last().Coordinates.Column;
 
@@ -40,19 +38,21 @@ public class CosmicExpansionPuzzle : PuzzleBase
 
         var answer1 = distancesBetweenGalaxies.SelectMany(x => x.Values.Select(y => y)).Sum();
 
-        var answer2 = 0;
+        var distancesBetweenGalaxiesLargerExpansion = GetDistancesBetweenGalaxies(celestialMap, nonGalaxyRowIndexes, nonGalaxyColumnIndexes, 1000000);
+
+        var answer2 = distancesBetweenGalaxiesLargerExpansion.SelectMany(x => x.Values.Select(y => y)).Sum();
 
         return (answer1,  answer2);
     }
 
-    private List<Dictionary<(int FirstGalaxy, int SecondGalaxy), int>> GetDistancesBetweenGalaxies(List<CelestialLocation> celestialMap, List<int> nonGalaxyRowIndexes, List<int> nonGalaxyColumnIndexes)
+    private List<Dictionary<(int FirstGalaxy, int SecondGalaxy), long>> GetDistancesBetweenGalaxies(List<CelestialLocation> celestialMap, List<int> nonGalaxyRowIndexes, List<int> nonGalaxyColumnIndexes, int expansionFactor = 2)
     {
         var galaxyLocations = celestialMap.Where(x => x.IsGalaxy).ToList();
-        var allGalaxyPairDistances = new List<Dictionary<(int FirstGalaxy, int SecondGalaxy), int>>();
+        var allGalaxyPairDistances = new List<Dictionary<(int FirstGalaxy, int SecondGalaxy), long>>();
         for(var i = 0; i < galaxyLocations.Count - 1; i++)
         {
             var galaxy = galaxyLocations[i];
-            var galaxyDistances = new Dictionary<(int FirstGalaxy,int SecondGalaxy),int>();
+            var galaxyDistances = new Dictionary<(int FirstGalaxy,int SecondGalaxy),long>();
 
             for(var j = (i + 1); j < galaxyLocations.Count; j++ )
             {
@@ -69,10 +69,10 @@ public class CosmicExpansionPuzzle : PuzzleBase
                     ? otherGalaxy.Coordinates.Column - galaxy.Coordinates.Column
                     : galaxy.Coordinates.Column - otherGalaxy.Coordinates.Column;
 
-                var distance = rowDiff + columnDiff + expandedRowCount + expandedColumnCount;
+                var distance = (expandedRowCount + expandedColumnCount) * expansionFactor + rowDiff + columnDiff - (expandedRowCount + expandedColumnCount);
 
                 galaxyDistances.Add((i + 1, j + 1),distance);
-                // Console.WriteLine($"Galaxy:{i+1}; Coordinates:{galaxy.Coordinates}; Galaxy:{j+1}; Coordinates:{otherGalaxy.Coordinates}; RowExpansion:{expandedRowCount}; ColumnExpansion:{expandedColumnCount}; Distance:{distance}");
+                // Console.WriteLine($"Galaxy:{i+1}; Coordinates:{galaxy.Coordinates}; Galaxy:{j+1}; Coordinates:{otherGalaxy.Coordinates}; RowExpansion:{expandedRowCount * expansionFactor}; ColumnExpansion:{expandedColumnCount * expansionFactor}; Distance:{distance}");
             }
             // Console.WriteLine(new string('-',15));
             allGalaxyPairDistances.Add(galaxyDistances);
