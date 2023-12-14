@@ -3,6 +3,7 @@
 namespace AdventOfCode._2023;
 
 using AdventOfCode._2023.Day10;
+using AdventOfCode._2023.Day11;
 using AdventOfCode._2023.Day4;
 using AdventOfCode._2023.Day5;
 using AdventOfCode._2023.Day6;
@@ -47,10 +48,21 @@ public class QuizRunner2023 : IQuizRunner
             case 10:
                 result = Day10();
                 break;
+            case 11:
+                result = Day11();
+                break;
         }
         Console.WriteLine($"Q1: {result.Answer1}");
         Console.WriteLine($"Q2: {result.Answer2}");
         Console.ReadLine();
+    }
+
+    private static (long Answer1, long Answer2) Day11()
+    {
+        var puzzle = new CosmicExpansionPuzzle();
+        var result = puzzle.CalculateAnswers("C:\\Development\\Personal\\AdventOfCode\\2023\\Day11\\input.txt");
+
+        return result;
     }
 
     private static (long Answer1, long Answer2) Day10()
