@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # Manually added
 *.bak
+*input*.txt
