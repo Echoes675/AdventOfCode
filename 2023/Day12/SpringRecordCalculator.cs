@@ -15,7 +15,10 @@ public class SpringRecordCalculator
             var pair = line.Split(" ");
             string pattern = pair[0];
             var damagedSprings = pair[1].Split(',').Select(int.Parse).ToArray();
-            total += Calculate(pattern, damagedSprings);
+            var arrangements =  Calculate(pattern, damagedSprings);
+            total += arrangements;
+
+            Console.WriteLine($"{pattern};{pair[1]};{arrangements}");
         }
 
         return total;
@@ -58,8 +61,8 @@ public class SpringRecordCalculator
 
             if (pattern.StartsWith('?'))
             {
-                return Calculate('.' + pattern[1..], groups)
-                    + Calculate('#' + pattern[1..], groups);
+                return Calculate('#' + pattern[1..], groups)
+                    + Calculate('.' + pattern[1..], groups);
             }
 
             if (pattern.StartsWith('#'))
@@ -74,9 +77,14 @@ public class SpringRecordCalculator
                     return 0;
                 }
 
+                if (pattern.Take(groups[0]).Contains('.'))
+                {
+                    return 0;
+                }
+
                 if (groups.Length > 1)
                 {
-                    if (pattern.Length < groups[0] + 1 || pattern[groups[0]] == '#')
+                    if (pattern.Length < groups.Sum() + (groups.Length - 1) || pattern[groups[0]] == '#')
                     {
                         return 0;
                     }
@@ -86,11 +94,7 @@ public class SpringRecordCalculator
                     continue;
                 }
 
-                // pattern = pattern[groups[0]..];
-
-                pattern = pattern.All(c => c is '#' or '?')
-                    ? pattern[groups[0]..]
-                    : pattern[pattern.IndexOf('.')..];
+                pattern = pattern[groups[0]..];
                 groups = groups[1..];
                 continue;
             }

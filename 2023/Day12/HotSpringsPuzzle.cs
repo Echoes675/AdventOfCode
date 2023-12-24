@@ -23,8 +23,26 @@ public class HotSpringsPuzzle : PuzzleBase
         var damagedRecords = GetFileLines(filePath);
         var answer1 = _calculator.CalculateNumberOfPossibleValidArrangements(damagedRecords);
 
-        var answer2 = 0;
+        var unfoldedDamagedRecords = UnfoldSprings(damagedRecords);
+
+        var answer2 = _calculator.CalculateNumberOfPossibleValidArrangements(unfoldedDamagedRecords);
 
         return (answer1, answer2);
+    }
+
+    private List<string> UnfoldSprings(List<string> springs)
+    {
+        var result = new List<string>();
+        foreach (var record in springs)
+        {
+            var springRecord = record.Split(' ');
+
+            var newPattern = string.Join('?', Enumerable.Repeat(springRecord[0], 5));
+            var newGroups = string.Join(',', Enumerable.Repeat(springRecord[1], 5));
+
+            result.Add(newPattern + " " + newGroups);
+        }
+
+        return result;
     }
 }
